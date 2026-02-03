@@ -129,6 +129,7 @@ const batteryModel: BatteryModel = {
 // ============================================================
 const meterMetadata: MeterMetadata = {
   enabled: true,
+  phases: 3,
 };
 
 const meterTelemetry: MeterTelemetry = {
@@ -167,6 +168,7 @@ const v2xMetadata: V2XChargerMetadata = {
   enabled: true,
   controllable: true,
   bidirectional: true,
+  phases: 3,
 };
 
 const v2xTelemetry: V2XChargerTelemetry = {

@@ -23,6 +23,8 @@ export interface V2XChargerMetadata {
   controllable: boolean;
   /** Supports V2G */
   bidirectional: boolean;
+  /** Number of phases (1 or 3) */
+  phases?: number;
 }
 
 /**
