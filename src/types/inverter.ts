@@ -33,6 +33,12 @@ export interface InverterTelemetry extends BaseState, ThreePhaseState {
   VAR?: number;
   /** AC frequency (Hz) */
   Hz?: number;
+  /** DC input power (W) */
+  dc_W?: number;
+  /** DC input voltage (V) */
+  dc_V?: number;
+  /** DC input current (A) */
+  dc_A?: number;
   /** Heatsink temperature (°C) */
   heatsink_C?: number;
 }

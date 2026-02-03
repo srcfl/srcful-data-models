@@ -49,6 +49,8 @@ const pvTelemetry: PVTelemetry = {
 | **Meter** | Grid connection point | `MeterMetadata` | `MeterTelemetry` |
 | **V2X Charger** | Bidirectional EV charger | `V2XChargerMetadata` | `V2XChargerTelemetry` |
 
+Inverter telemetry can optionally include DC-side measurements (`dc_W`, `dc_V`, `dc_A`) to estimate conversion losses.
+
 ## Sign Convention
 
 | DER Type | Positive W (+) | Negative W (-) |
