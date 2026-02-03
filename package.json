@@ -1,0 +1,53 @@
+{
+  "name": "@srcful/data-models",
+  "version": "1.0.0",
+  "description": "Sourceful Energy Data Models - TypeScript definitions for DER metadata and telemetry",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "prepublishOnly": "npm run build",
+    "playground": "tsx src/playground.ts"
+  },
+  "keywords": [
+    "sourceful",
+    "energy",
+    "der",
+    "solar",
+    "pv",
+    "inverter",
+    "battery",
+    "meter",
+    "v2x",
+    "telemetry",
+    "metadata"
+  ],
+  "author": "Sourceful",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
