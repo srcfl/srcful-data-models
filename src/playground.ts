@@ -97,6 +97,8 @@ const inverterModel: InverterModel = {
 const batteryMetadata: BatteryMetadata = {
   rated_power_W: 5000,
   capacity_kWh: 13.5,
+  min_soc_fract: 0.1,
+  max_soc_fract: 0.95,
   enabled: true,
   controllable: true,
 };
@@ -106,6 +108,7 @@ const batteryTelemetry: BatteryTelemetry = {
   V: 52.1,
   A: -48.0,
   SoC_nom_fract: 0.65, // 65% charge
+  SoH_fract: 0.92,
   heatsink_C: 32.0,
   upper_limit_W: 5000,
   lower_limit_W: -5000,

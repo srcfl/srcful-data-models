@@ -32,6 +32,7 @@ This document explains how metadata (static configuration) is separated from tel
 │  │   BatteryMetadata       │    │    │     BatteryData         │            │
 │  │  - rated_power_W        │    │    │  - W, V, A              │            │
 │  │  - capacity_kWh         │    │    │  - SoC_nom_fract        │            │
+│  │  - min/max SoC reserve  │    │    │  - SoH_fract            │            │
 │  │  - enabled, controllable│    │    │  - upper/lower_limit_W  │            │
 │  └─────────────────────────┘    │    └─────────────────────────┘            │
 │                                 │                                           │

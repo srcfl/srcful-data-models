@@ -10,6 +10,10 @@ export interface BatteryMetadata {
   rated_power_W: number;
   /** Total energy capacity (kWh) */
   capacity_kWh: number;
+  /** Minimum allowed SoC fraction (0-1) */
+  min_soc_fract?: number;
+  /** Maximum allowed SoC fraction (0-1) */
+  max_soc_fract?: number;
   /** Publishing enabled */
   enabled: boolean;
   /** Can accept power commands */
@@ -34,6 +38,8 @@ export interface BatteryTelemetry extends BaseState {
   A?: number;
   /** State of charge fraction (0-1) */
   SoC_nom_fract?: number;
+  /** State of health fraction (0-1) */
+  SoH_fract?: number;
   /** Heatsink temperature (°C) */
   heatsink_C?: number;
   /** Max charge power now (W) */

@@ -51,6 +51,8 @@ const pvTelemetry: PVTelemetry = {
 
 Inverter telemetry can optionally include DC-side measurements (`dc_W`, `dc_V`, `dc_A`) to estimate conversion losses.
 
+Battery metadata can include minimum/maximum SoC reserves (`min_soc_fract`, `max_soc_fract`), and telemetry can report `SoH_fract`.
+
 ## Sign Convention
 
 | DER Type | Positive W (+) | Negative W (-) |
