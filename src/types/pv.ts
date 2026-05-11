@@ -22,17 +22,23 @@ export interface PVMetadata {
  *
  * Sign convention: PV generation is negative W (export direction).
  * `lower_limit_W` limits how much can be exported (curtailment).
+ *
+ * `heatsink_C` does NOT live here — heatsink temperature is a
+ * property of the inverter's AC-conversion stage, not the PV array.
+ * See `InverterTelemetry.heatsink_C`.
  */
 export interface PVTelemetry extends BaseState {
-  /** Current power (negative = generating) (W) */
+  /** Current power (W; negative = generating, Sourceful sign) */
   W: number;
-  /** Array of MPPT inputs (variable N) */
-  mppt?: MPPT[];
-  /** Max export/curtailment limit (negative) (W) */
+  /** Array of MPPT inputs (length = device's MPPT count) */
+  mppts?: MPPT[];
+  /**
+   * Curtailment limit (W; negative — the most-negative power the
+   * inverter is allowed to draw from PV).  Only meaningful for
+   * controllable / dispatchable inverters.
+   */
   lower_limit_W?: number;
-  /** Heatsink temperature (°C) */
-  heatsink_C?: number;
-  /** Lifetime energy produced (Wh) */
+  /** Lifetime energy generated (Wh) */
   total_generation_Wh?: number;
 }
 

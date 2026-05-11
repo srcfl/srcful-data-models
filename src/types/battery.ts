@@ -30,26 +30,48 @@ export interface BatteryMetadata {
  * - Negative W (-) = Discharging (export)
  */
 export interface BatteryTelemetry extends BaseState {
-  /** Power (+charge, -discharge) (W) */
+  /** Power (W; +charge / -discharge, Sourceful sign) */
   W: number;
   /** Battery voltage (V) */
   V?: number;
-  /** Current (+charge, -discharge) (A) */
+  /** Battery current (A; +charge / -discharge) */
   A?: number;
-  /** State of charge fraction (0-1) */
+  /** State of charge (fraction 0..1, nominal capacity basis) */
   SoC_nom_fract?: number;
-  /** State of health fraction (0-1) */
+  /** State of health (fraction 0..1) */
   SoH_fract?: number;
-  /** Heatsink temperature (°C) */
-  heatsink_C?: number;
-  /** Max charge power now (W) */
+  /**
+   * Battery cell / pack temperature (°C).
+   *
+   * This is NOT a heatsink — a battery is a chemical cell stack with
+   * its own thermal sensors.  Inverter heatsink temperature lives on
+   * `InverterTelemetry.heatsink_C`.
+   */
+  temperature_C?: number;
+  /** Max instantaneous charge power right now (W; ≥ 0) */
   upper_limit_W?: number;
-  /** Max discharge power now (negative) (W) */
+  /** Max instantaneous discharge power right now (W; ≤ 0) */
   lower_limit_W?: number;
   /** Lifetime energy charged (Wh) */
   total_charge_Wh?: number;
   /** Lifetime energy discharged (Wh) */
   total_discharge_Wh?: number;
+  /**
+   * Available energy headroom in the charge direction (Wh; ≥ 0).
+   *
+   * "How many Wh the battery can still absorb before hitting the
+   * upper SoC band edge".  Driver-emitted, or derived from
+   * `(SoC_max − SoC_now) × capacity` when the BMS doesn't report
+   * it directly.  Flower maps to `energy_downwards`.
+   */
+  available_charge_Wh?: number;
+  /**
+   * Available energy headroom in the discharge direction (Wh; ≥ 0).
+   *
+   * "How many Wh the battery can still deliver before hitting the
+   * lower SoC band edge".  Flower maps to `energy_upwards`.
+   */
+  available_discharge_Wh?: number;
 }
 
 /**

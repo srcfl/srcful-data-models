@@ -36,12 +36,11 @@ const pvMetadata: PVMetadata = {
 
 const pvTelemetry: PVTelemetry = {
   W: -7500, // Negative = generating
-  mppt: [
-    { V: 380, A: 12.5 },
-    { V: 375, A: 7.5 },
+  mppts: [
+    { V: 380, A: 12.5, W: -4750 },
+    { V: 375, A: 7.5, W: -2750 },
   ],
   lower_limit_W: -5000, // Curtailed to 5kW export
-  heatsink_C: 42.5,
   total_generation_Wh: 45230000,
   timestamp: Date.now(),
 };
@@ -109,11 +108,13 @@ const batteryTelemetry: BatteryTelemetry = {
   A: -48.0,
   SoC_nom_fract: 0.65, // 65% charge
   SoH_fract: 0.92,
-  heatsink_C: 32.0,
+  temperature_C: 32.0, // battery pack temp — renamed from heatsink_C
   upper_limit_W: 5000,
   lower_limit_W: -5000,
   total_charge_Wh: 12500000,
   total_discharge_Wh: 11800000,
+  available_charge_Wh: 4050000, // (max_soc - soc) × capacity = (0.95-0.65) × 13.5kWh
+  available_discharge_Wh: 7425000, // (soc - min_soc) × capacity = (0.65-0.10) × 13.5kWh
   timestamp: Date.now(),
 };
 
