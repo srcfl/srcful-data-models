@@ -22,14 +22,27 @@ export interface MeterMetadata {
  * - Negative W (-) = Export to grid
  */
 export interface MeterTelemetry extends BaseState, ThreePhaseState {
-  /** Grid power (+import, -export) (W) */
-  W: number;
-  /** Grid frequency (Hz) */
+  /**
+   * @deprecated since 1.2.0 — use `W_AC`.
+   *
+   * Grid active power (+import / -export, W).  Kept as an optional
+   * alias for backwards compatibility; producers SHOULD emit `W_AC`.
+   */
+  W?: number;
+  /** @deprecated since 1.2.0 — use `Hz_AC` */
   Hz?: number;
-  /** Lifetime grid import (Wh) */
+  /** @deprecated since 1.2.0 — use `total_import_Wh_AC` */
   total_import_Wh?: number;
-  /** Lifetime grid export (Wh) */
+  /** @deprecated since 1.2.0 — use `total_export_Wh_AC` */
   total_export_Wh?: number;
+  /** Grid active power (AC; +import / -export) */
+  W_AC?: number;
+  /** Grid frequency (AC) */
+  Hz_AC?: number;
+  /** Lifetime grid import (AC) */
+  total_import_Wh_AC?: number;
+  /** Lifetime grid export (AC) */
+  total_export_Wh_AC?: number;
 }
 
 /**

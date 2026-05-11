@@ -28,18 +28,29 @@ export interface PVMetadata {
  * See `InverterTelemetry.heatsink_C`.
  */
 export interface PVTelemetry extends BaseState {
-  /** Current power (W; negative = generating, Sourceful sign) */
-  W: number;
+  /**
+   * @deprecated since 1.2.0 — use `W_DC`.
+   *
+   * Current power (W; negative = generating, Sourceful sign).  Kept
+   * as an optional alias for backwards compatibility.
+   */
+  W?: number;
+  /** @deprecated since 1.2.0 — use `lower_limit_W_DC` */
+  lower_limit_W?: number;
+  /** @deprecated since 1.2.0 — use `total_generation_Wh_DC` */
+  total_generation_Wh?: number;
+  /** Total DC PV power (negative = generating, Sourceful sign) */
+  W_DC?: number;
   /** Array of MPPT inputs (length = device's MPPT count) */
   mppts?: MPPT[];
   /**
-   * Curtailment limit (W; negative — the most-negative power the
+   * Curtailment limit (DC; negative — the most-negative power the
    * inverter is allowed to draw from PV).  Only meaningful for
    * controllable / dispatchable inverters.
    */
-  lower_limit_W?: number;
-  /** Lifetime energy generated (Wh) */
-  total_generation_Wh?: number;
+  lower_limit_W_DC?: number;
+  /** Lifetime energy generated (DC) */
+  total_generation_Wh_DC?: number;
 }
 
 /**
