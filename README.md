@@ -49,6 +49,12 @@ const pvTelemetry: PVTelemetry = {
 | **Meter** | Grid connection point | `MeterMetadata` | `MeterTelemetry` |
 | **V2X Charger** | Bidirectional EV charger | `V2XChargerMetadata` | `V2XChargerTelemetry` |
 
+Inverter telemetry can optionally include DC-side measurements (`dc_W`, `dc_V`, `dc_A`) to estimate conversion losses.
+
+Battery metadata can include minimum/maximum SoC reserves (`min_soc_fract`, `max_soc_fract`), and telemetry can report `SoH_fract`.
+
+Meter and V2X charger metadata can include `phases` (1 or 3) for single/three-phase sites.
+
 ## Sign Convention
 
 | DER Type | Positive W (+) | Negative W (-) |

@@ -36,12 +36,11 @@ const pvMetadata: PVMetadata = {
 
 const pvTelemetry: PVTelemetry = {
   W: -7500, // Negative = generating
-  mppt: [
-    { V: 380, A: 12.5 },
-    { V: 375, A: 7.5 },
+  mppts: [
+    { V: 380, A: 12.5, W: -4750 },
+    { V: 375, A: 7.5, W: -2750 },
   ],
   lower_limit_W: -5000, // Curtailed to 5kW export
-  heatsink_C: 42.5,
   total_generation_Wh: 45230000,
   timestamp: Date.now(),
 };
@@ -64,19 +63,22 @@ const inverterMetadata: InverterMetadata = {
 };
 
 const inverterTelemetry: InverterTelemetry = {
-  W: 7500,
-  VA: 7600,
-  VAR: 150,
-  Hz: 50.01,
-  L1_V: 230.5,
-  L1_A: 10.8,
-  L1_W: 2500,
-  L2_V: 231.0,
-  L2_A: 10.9,
-  L2_W: 2520,
-  L3_V: 229.8,
-  L3_A: 10.7,
-  L3_W: 2480,
+  W_AC: 7500,
+  VA_AC: 7600,
+  VAR_AC: 150,
+  Hz_AC: 50.01,
+  dc_W: 7800,
+  dc_V: 480,
+  dc_A: 16.25,
+  L1_V_AC: 230.5,
+  L1_A_AC: 10.8,
+  L1_W_AC: 2500,
+  L2_V_AC: 231.0,
+  L2_A_AC: 10.9,
+  L2_W_AC: 2520,
+  L3_V_AC: 229.8,
+  L3_A_AC: 10.7,
+  L3_W_AC: 2480,
   heatsink_C: 45.2,
   timestamp: Date.now(),
 };
@@ -94,6 +96,8 @@ const inverterModel: InverterModel = {
 const batteryMetadata: BatteryMetadata = {
   rated_power_W: 5000,
   capacity_kWh: 13.5,
+  min_soc_fract: 0.1,
+  max_soc_fract: 0.95,
   enabled: true,
   controllable: true,
 };
@@ -103,11 +107,14 @@ const batteryTelemetry: BatteryTelemetry = {
   V: 52.1,
   A: -48.0,
   SoC_nom_fract: 0.65, // 65% charge
-  heatsink_C: 32.0,
+  SoH_fract: 0.92,
+  temperature_C: 32.0, // battery pack temp — renamed from heatsink_C
   upper_limit_W: 5000,
   lower_limit_W: -5000,
   total_charge_Wh: 12500000,
   total_discharge_Wh: 11800000,
+  available_charge_Wh: 4050000, // (max_soc - soc) × capacity = (0.95-0.65) × 13.5kWh
+  available_discharge_Wh: 7425000, // (soc - min_soc) × capacity = (0.65-0.10) × 13.5kWh
   timestamp: Date.now(),
 };
 
@@ -123,22 +130,23 @@ const batteryModel: BatteryModel = {
 // ============================================================
 const meterMetadata: MeterMetadata = {
   enabled: true,
+  phases: 3,
 };
 
 const meterTelemetry: MeterTelemetry = {
-  W: 1500, // Positive = importing from grid
-  Hz: 50.02,
-  L1_V: 230.5,
-  L1_A: 6.5,
-  L1_W: 500,
-  L2_V: 231.0,
-  L2_A: 6.5,
-  L2_W: 500,
-  L3_V: 229.8,
-  L3_A: 6.5,
-  L3_W: 500,
-  total_import_Wh: 15600000,
-  total_export_Wh: 8200000,
+  W_AC: 1500, // Positive = importing from grid
+  Hz_AC: 50.02,
+  L1_V_AC: 230.5,
+  L1_A_AC: 6.5,
+  L1_W_AC: 500,
+  L2_V_AC: 231.0,
+  L2_A_AC: 6.5,
+  L2_W_AC: 500,
+  L3_V_AC: 229.8,
+  L3_A_AC: 6.5,
+  L3_W_AC: 500,
+  total_import_Wh_AC: 15600000,
+  total_export_Wh_AC: 8200000,
   timestamp: Date.now(),
 };
 
@@ -161,30 +169,31 @@ const v2xMetadata: V2XChargerMetadata = {
   enabled: true,
   controllable: true,
   bidirectional: true,
+  phases: 3,
 };
 
 const v2xTelemetry: V2XChargerTelemetry = {
-  W: -7000, // Negative = V2G discharging
-  A: 30.4,
-  V: 230.0,
-  Hz: 50.01,
-  dc_W: -6800,
-  dc_V: 400,
-  dc_A: -17,
+  W_AC: -7000, // Negative = V2G discharging
+  A_AC: 30.4,
+  V_AC: 230.0,
+  Hz_AC: 50.01,
+  W_DC: -6800,
+  V_DC: 400,
+  A_DC: -17,
   vehicle_soc_fract: 0.8,
-  ev_target_energy_req_Wh: 20000,
-  ev_max_energy_req_Wh: 15000,
-  ev_min_energy_req_Wh: 40000,
-  session_charge_Wh: 0,
-  session_discharge_Wh: 5400,
-  total_charge_Wh: 125000,
-  total_discharge_Wh: 48000,
+  ev_target_energy_req_Wh_DC: 20000,
+  ev_max_energy_req_Wh_DC: 15000,
+  ev_min_energy_req_Wh_DC: 40000,
+  session_charge_Wh_AC: 0,
+  session_discharge_Wh_AC: 5400,
+  total_charge_Wh_AC: 125000,
+  total_discharge_Wh_AC: 48000,
   status: V2XStatus.Discharging,
   protocol: "ISO15118",
   control_mode: "dynamic",
   plug_connected: true,
-  upper_limit_W: [1400, 0, 11000],
-  lower_limit_W: [-11000, 0, -1400],
+  upper_limit_W_AC: [1400, 0, 11000],
+  lower_limit_W_AC: [-11000, 0, -1400],
   timestamp: Date.now(),
 };
 
@@ -229,17 +238,27 @@ console.log("WORKING WITH UNION TYPES");
 console.log("=".repeat(60));
 
 function describeDER(der: DERModel): string {
+  // Prefer the new explicit `_AC` / `_DC` field; fall back to the
+  // legacy bare field for v1.1.0-and-earlier producers.
   switch (der.type) {
-    case "pv":
-      return `PV generating ${Math.abs(der.state.W)}W from ${der.spec.installed_power_W}W capacity`;
-    case "inverter":
-      return `Inverter outputting ${der.state.W}W AC (${der.spec.phases}-phase)`;
-    case "battery":
-      const action = der.state.W < 0 ? "discharging" : "charging";
-      return `Battery ${action} at ${Math.abs(der.state.W)}W, SoC: ${((der.state.SoC_nom_fract ?? 0) * 100).toFixed(0)}%`;
-    case "meter":
-      const direction = der.state.W > 0 ? "importing" : "exporting";
-      return `Meter ${direction} ${Math.abs(der.state.W)}W`;
+    case "pv": {
+      const w = der.state.W_DC ?? der.state.W ?? 0;
+      return `PV generating ${Math.abs(w)}W from ${der.spec.installed_power_W}W capacity`;
+    }
+    case "inverter": {
+      const w = der.state.W_AC ?? der.state.W ?? 0;
+      return `Inverter outputting ${w}W AC (${der.spec.phases}-phase)`;
+    }
+    case "battery": {
+      const w = der.state.W_DC ?? der.state.W ?? 0;
+      const action = w < 0 ? "discharging" : "charging";
+      return `Battery ${action} at ${Math.abs(w)}W, SoC: ${((der.state.SoC_nom_fract ?? 0) * 100).toFixed(0)}%`;
+    }
+    case "meter": {
+      const w = der.state.W_AC ?? der.state.W ?? 0;
+      const direction = w > 0 ? "importing" : "exporting";
+      return `Meter ${direction} ${Math.abs(w)}W`;
+    }
     case "v2x_charger":
       return `V2X Charger: ${der.state.status}, vehicle at ${((der.state.vehicle_soc_fract ?? 0) * 100).toFixed(0)}% SoC`;
   }

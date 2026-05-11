@@ -1,6 +1,6 @@
 {
   "name": "@srcful/data-models",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Sourceful Energy Data Models - TypeScript definitions for DER metadata and telemetry",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -22,7 +22,8 @@ This document explains how metadata (static configuration) is separated from tel
 │  ┌─────────────────────────┐    │    ┌─────────────────────────┐            │
 │  │  InverterMetadata (AC)  │    │    │   InverterData (AC)     │            │
 │  │  - rated_power_W        │    │    │  - W, VA, VAR, Hz       │            │
-│  │  - rated_power_VA       │    │    │  - L1/L2/L3 V/A/W       │            │
+│  │  - rated_power_VA       │    │    │  - dc_W, dc_V, dc_A     │            │
+│  │  - phases               │    │    │  - L1/L2/L3 V/A/W       │            │
 │  │  - phases               │    │    │  - heatsink_C           │            │
 │  │  - enabled              │    │    │                         │            │
 │  └─────────────────────────┘    │    └─────────────────────────┘            │
@@ -31,21 +32,23 @@ This document explains how metadata (static configuration) is separated from tel
 │  │   BatteryMetadata       │    │    │     BatteryData         │            │
 │  │  - rated_power_W        │    │    │  - W, V, A              │            │
 │  │  - capacity_kWh         │    │    │  - SoC_nom_fract        │            │
+│  │  - min/max SoC reserve  │    │    │  - SoH_fract            │            │
 │  │  - enabled, controllable│    │    │  - upper/lower_limit_W  │            │
 │  └─────────────────────────┘    │    └─────────────────────────┘            │
 │                                 │                                           │
 │  ┌─────────────────────────┐    │    ┌─────────────────────────┐            │
 │  │    MeterMetadata        │    │    │      MeterData          │            │
 │  │  - enabled              │    │    │  - W, Hz                │            │
-│  └─────────────────────────┘    │    │  - L1/L2/L3 V/A/W       │            │
-│                                 │    │  - total_import/export  │            │
+│  │  - phases               │    │    │  - L1/L2/L3 V/A/W       │            │
+│  └─────────────────────────┘    │    │  - total_import/export  │            │
 │                                 │    └─────────────────────────┘            │
 │  ┌─────────────────────────┐    │    ┌─────────────────────────┐            │
 │  │   V2XChargerMetadata    │    │    │    V2XChargerData       │            │
 │  │  - max_charge_power_W   │    │    │  - W, dc_W              │            │
 │  │  - max_discharge_power_W│    │    │  - vehicle_soc_fract    │            │
 │  │  - capacity_Wh          │    │    │  - status, protocol     │            │
-│  │  - enabled, controllable│    │    │  - upper/lower_limit_W  │            │
+│  │  - phases               │    │    │  - upper/lower_limit_W  │            │
+│  │  - enabled, controllable│    │    │                         │            │
 │  └─────────────────────────┘    │    └─────────────────────────┘            │
 │                                 │                                           │
 └─────────────────────────────────┴───────────────────────────────────────────┘

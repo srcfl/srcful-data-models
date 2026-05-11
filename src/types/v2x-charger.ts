@@ -23,6 +23,8 @@ export interface V2XChargerMetadata {
   controllable: boolean;
   /** Supports V2G */
   bidirectional: boolean;
+  /** Number of phases (1 or 3) */
+  phases?: number;
 }
 
 /**
@@ -35,36 +37,81 @@ export interface V2XChargerMetadata {
  * - Negative W (-) = V2G discharge (export)
  */
 export interface V2XChargerTelemetry extends BaseState, ThreePhaseState {
-  /** AC power (+charge, -V2G) (W) */
-  W: number;
-  /** AC grid current (total) (A) */
+  // ── AC side (charger grid interface) ────────────────────────────
+  /**
+   * @deprecated since 1.2.0 — use `W_AC`.
+   *
+   * AC active power (+charge / -V2G).  Kept as an optional alias
+   * for backwards compatibility.
+   */
+  W?: number;
+  /** @deprecated since 1.2.0 — use `A_AC` */
   A?: number;
-  /** AC grid voltage (average) (V) */
+  /** @deprecated since 1.2.0 — use `V_AC` */
   V?: number;
-  /** Grid frequency (Hz) */
+  /** @deprecated since 1.2.0 — use `Hz_AC` */
   Hz?: number;
-  /** DC power to/from EV (W) */
+  /** AC active power total (+charge / -V2G) */
+  W_AC?: number;
+  /** AC grid current total */
+  A_AC?: number;
+  /** AC grid voltage (average across phases) */
+  V_AC?: number;
+  /** AC grid frequency */
+  Hz_AC?: number;
+
+  // ── DC side (charger ↔ EV) ──────────────────────────────────────
+  /** @deprecated since 1.2.0 — use `W_DC` */
   dc_W?: number;
-  /** DC link voltage (V) */
+  /** @deprecated since 1.2.0 — use `V_DC` */
   dc_V?: number;
-  /** DC link current (A) */
+  /** @deprecated since 1.2.0 — use `A_DC` */
   dc_A?: number;
-  /** EV state of charge (0-1) */
+  /** DC power to/from EV */
+  W_DC?: number;
+  /** DC link voltage */
+  V_DC?: number;
+  /** DC link current */
+  A_DC?: number;
+
+  // ── EV state ────────────────────────────────────────────────────
+  /** EV state of charge (fraction 0..1) */
   vehicle_soc_fract?: number;
-  /** Energy needed to reach target SoC (Wh) */
+  /** @deprecated since 1.2.0 — use `ev_target_energy_req_Wh_DC` */
   ev_target_energy_req_Wh?: number;
-  /** Empty space available for charging (Wh) */
+  /** @deprecated since 1.2.0 — use `ev_max_energy_req_Wh_DC` */
   ev_max_energy_req_Wh?: number;
-  /** Energy available for V2G export (Wh) */
+  /** @deprecated since 1.2.0 — use `ev_min_energy_req_Wh_DC` */
   ev_min_energy_req_Wh?: number;
-  /** Energy charged this session (Wh) */
+  /** Energy needed to reach target SoC (DC, EV-side) */
+  ev_target_energy_req_Wh_DC?: number;
+  /** Empty space available for charging (DC, EV-side) */
+  ev_max_energy_req_Wh_DC?: number;
+  /** Energy available for V2G export (DC, EV-side) */
+  ev_min_energy_req_Wh_DC?: number;
+
+  // ── Session + lifetime energy ───────────────────────────────────
+  // Convention: charger-AC-grid energy carries `_AC` (what the meter
+  // would see).  EV-side stored energy uses `_DC` (what the BMS reports).
+  // Charging-session totals are reported at the AC-side cut here.
+  /** @deprecated since 1.2.0 — use `session_charge_Wh_AC` */
   session_charge_Wh?: number;
-  /** Energy discharged this session (Wh) */
+  /** @deprecated since 1.2.0 — use `session_discharge_Wh_AC` */
   session_discharge_Wh?: number;
-  /** Lifetime energy delivered to EV (Wh) */
+  /** @deprecated since 1.2.0 — use `total_charge_Wh_AC` */
   total_charge_Wh?: number;
-  /** Lifetime energy exported (V2G) (Wh) */
+  /** @deprecated since 1.2.0 — use `total_discharge_Wh_AC` */
   total_discharge_Wh?: number;
+  /** Energy charged this session (AC, grid-side) */
+  session_charge_Wh_AC?: number;
+  /** Energy discharged this session (AC, grid-side) */
+  session_discharge_Wh_AC?: number;
+  /** Lifetime energy delivered to EV (AC, grid-side) */
+  total_charge_Wh_AC?: number;
+  /** Lifetime energy exported (V2G) (AC, grid-side) */
+  total_discharge_Wh_AC?: number;
+
+  // ── Charger status / control ────────────────────────────────────
   /** Charger status */
   status?: V2XStatus | string;
   /** Communication protocol (e.g. ISO15118) */
@@ -73,10 +120,14 @@ export interface V2XChargerTelemetry extends BaseState, ThreePhaseState {
   control_mode?: string;
   /** Vehicle connected */
   plug_connected?: boolean;
-  /** Charge limits [min, 0, max] (W) */
+  /** @deprecated since 1.2.0 — use `upper_limit_W_AC` */
   upper_limit_W?: [number, number, number];
-  /** Discharge limits [-max, 0, -min] (W) */
+  /** @deprecated since 1.2.0 — use `lower_limit_W_AC` */
   lower_limit_W?: [number, number, number];
+  /** Charge limits [min, 0, max] (AC; W) */
+  upper_limit_W_AC?: [number, number, number];
+  /** Discharge limits [-max, 0, -min] (AC; W) */
+  lower_limit_W_AC?: [number, number, number];
 }
 
 /**

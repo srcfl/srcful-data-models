@@ -25,14 +25,34 @@ export interface InverterMetadata {
  * Provides AC measurements and rated capacity information.
  */
 export interface InverterTelemetry extends BaseState, ThreePhaseState {
-  /** Current AC active power (W) */
-  W: number;
-  /** Current AC apparent power (VA) */
+  /** @deprecated since 1.2.0 — use `W_AC` */
+  W?: number;
+  /** @deprecated since 1.2.0 — use `VA_AC` */
   VA?: number;
-  /** Current AC reactive power (VAR) */
+  /** @deprecated since 1.2.0 — use `VAR_AC` */
   VAR?: number;
-  /** AC frequency (Hz) */
+  /** @deprecated since 1.2.0 — use `Hz_AC` */
   Hz?: number;
+  /** @deprecated since 1.2.0 — use `W_DC` */
+  dc_W?: number;
+  /** @deprecated since 1.2.0 — use `V_DC` */
+  dc_V?: number;
+  /** @deprecated since 1.2.0 — use `A_DC` */
+  dc_A?: number;
+  /** AC active power total */
+  W_AC?: number;
+  /** AC apparent power total */
+  VA_AC?: number;
+  /** AC reactive power total */
+  VAR_AC?: number;
+  /** AC frequency */
+  Hz_AC?: number;
+  /** DC input power */
+  W_DC?: number;
+  /** DC input voltage */
+  V_DC?: number;
+  /** DC input current */
+  A_DC?: number;
   /** Heatsink temperature (°C) */
   heatsink_C?: number;
 }
